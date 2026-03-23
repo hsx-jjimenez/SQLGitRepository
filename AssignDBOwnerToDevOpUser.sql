@@ -28,3 +28,12 @@ WHERE database_id > 4 -- Skip system DBs (master, model, msdb, tempdb)
 -- Execute the combined commands
 EXEC sp_executesql @sql;
 GO
+
+/*After running this, you can verify the access across all databases with this audit query:
+
+DECLARE @audit NVARCHAR(MAX) = 'USE [?]; 
+IF EXISTS (SELECT 1 FROM sys.database_principals WHERE name = ''HSX-SQLDev'')
+SELECT DB_NAME() as DB, name, type_desc FROM sys.database_principals WHERE name = ''HSX-SQLDev''';
+
+EXEC sp_MSforeachdb @audit;
+*/
